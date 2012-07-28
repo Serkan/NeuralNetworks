@@ -1,5 +1,6 @@
 package org.neuralnetworking.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,6 +12,14 @@ import java.util.List;
 public class Layer {
 
     List<Neuron> neurons;
+
+    public Layer() {
+        neurons = new ArrayList<>();
+    }
+
+    public void addNeuron(Neuron neuron) {
+        neurons.add(neuron);
+    }
 
     /**
      * @return the neurons

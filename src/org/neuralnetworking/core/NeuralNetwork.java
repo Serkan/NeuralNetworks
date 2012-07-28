@@ -1,6 +1,7 @@
 package org.neuralnetworking.core;
 
-import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * Holds entire network through layers.
@@ -10,19 +11,30 @@ import java.util.List;
  */
 public class NeuralNetwork {
 
-    private List<Layer> layers;
+    private Queue<Layer> layers;
+
+    public NeuralNetwork(int layerCount, int neuronCount) {
+        layers = new PriorityQueue<Layer>();
+        for (int i = 0; i < layerCount; i++) {
+            Layer layer = new Layer();
+            for (int j = 0; j < neuronCount; j++) {
+                layer.addNeuron(new Neuron(neuronCount));
+            }
+            layers.add(layer);
+        }
+    }
 
     /**
      * @return the layers
      */
-    public List<Layer> getLayers() {
+    public Queue<Layer> getLayers() {
         return layers;
     }
 
     /**
      * @param layers the layers to set
      */
-    public void setLayers(List<Layer> layers) {
+    public void setLayers(Queue<Layer> layers) {
         this.layers = layers;
     }
 
