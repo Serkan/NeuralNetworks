@@ -17,6 +17,10 @@ public class Neuron {
 
     private ActivatorFunction activator;
 
+    private int output;
+
+    private List<Boolean> inputVector;
+
     /**
      * 
      * Default constructor.
@@ -26,6 +30,7 @@ public class Neuron {
     public Neuron(int inputsize) {
         activator = new ActivatorImpl();
         weigths = new ArrayList<Weight>();
+        output = 0;
         for (int i = 0; i < inputsize; i++) {
             weigths.add(RandomWeightProducer.produce());
         }
@@ -48,9 +53,26 @@ public class Neuron {
                 }
                 result += temp * weigths.get(i).getWeight();
             }
-            return activator.activate(result);
+            if (activator.activate(result)) {
+                output = 1;
+                return true;
+            } else {
+                return false;
+            }
         } else {
             throw new RuntimeException("Weight and input size are not equal");
+        }
+    }
+
+    public void changeWeights(double learningRate, int expected) {
+        for (int i = 0; i < weigths.size(); i++) {
+            int input = 0;
+            if (inputVector.get(i)) {
+                input = 1;
+            }
+            double oldWeight = weigths.get(i).getWeight();
+            double newWeight = (learningRate * (output - expected) * oldWeight) * input;
+            weigths.get(i).setWeight(newWeight);
         }
     }
 
