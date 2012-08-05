@@ -3,6 +3,9 @@ package org.neuralnetworking.core;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Holds entire network through layers.
  * 
@@ -11,17 +14,35 @@ import java.util.Queue;
  */
 public class NeuralNetwork {
 
+    Logger logger = LoggerFactory.getLogger(NeuralNetwork.class);
+
+    private Layer inputLayer;
+
+    private Layer outputLayer;
+
     private Queue<Layer> layers;
 
-    public NeuralNetwork(int layerCount, int neuronCount) {
+    public NeuralNetwork(int inputSize, int outpuSize,int layerCount) {
+        logger.info("Input size : " + inputSize);
+        logger.info("Output size : " + outpuSize);
         layers = new PriorityQueue<Layer>();
+        // creating input layer
+        inputLayer = new Layer(inputSize);
+        layers.add(inputLayer);
+        // constructing hidden layers
+        Layer layer = null;
+        //detecting hidden layers' neuron size
+        int layerSize = inputSize - outpuSize;
         for (int i = 0; i < layerCount; i++) {
-            Layer layer = new Layer();
-            for (int j = 0; j < neuronCount; j++) {
-                layer.addNeuron(new Neuron(neuronCount));
-            }
+            layer = new Layer(layerSize);
+            // for (int j = 0; j < neuronCount; j++) {
+            // layer.addNeuron(new Neuron(neuronCount));
+            // }
             layers.add(layer);
         }
+        // creating output layer
+        outputLayer = new Layer(outpuSize);
+        layers.add(outputLayer);
     }
 
     /**
@@ -32,10 +53,25 @@ public class NeuralNetwork {
     }
 
     /**
-     * @param layers the layers to set
+     * Size of containing layers.
+     * 
+     * @return layers count
      */
-    public void setLayers(Queue<Layer> layers) {
-        this.layers = layers;
+    public int getSizeOfLayers() {
+        return layers.size();
+    }
+
+    /**
+     * Sum of all containing neurons.
+     * 
+     * @return Neurons size
+     */
+    public int getSizeOfNeurons() {
+        int neuronSize = 0;
+        for (Layer layer : layers) {
+            neuronSize += layer.getSize();
+        }
+        return neuronSize;
     }
 
 }
