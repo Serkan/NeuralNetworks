@@ -2,7 +2,7 @@ package org.neuralnetworking.core;
 
 public class ActivatorImpl implements ActivatorFunction {
 
-    private final static double THERSHOLD = 0.5;
+    private static double THERSHOLD = 0.5;
 
     @Override
     public boolean activate(double value) {
