@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.neuralnetworking.util.RandomWeightProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Network nodes, calculate value and runs activator function.
@@ -11,7 +13,9 @@ import org.neuralnetworking.util.RandomWeightProducer;
  * @author serkan
  * 
  */
-public class Neuron {
+public class Neuron extends AbstractNeuron {
+
+    Logger logger = LoggerFactory.getLogger(Neuron.class);
 
     private List<Weight> weigths;
 
@@ -21,6 +25,14 @@ public class Neuron {
 
     private List<Boolean> inputVector;
 
+    private boolean inputNeuron = false;
+
+    public Neuron() {
+        logger.info("Input neuron");
+        activator = new ActivatorImpl();
+        inputNeuron = true;
+    }
+
     /**
      * 
      * Default constructor.
@@ -28,6 +40,8 @@ public class Neuron {
      * @param inputsize Previous layer neuron count
      */
     public Neuron(int inputsize) {
+        logger.info("Neuron id : " + getNeuronId());
+        logger.info("Neuron input size : " + inputsize);
         activator = new ActivatorImpl();
         weigths = new ArrayList<Weight>();
         output = 0;
@@ -71,7 +85,8 @@ public class Neuron {
                 input = 1;
             }
             double oldWeight = weigths.get(i).getWeight();
-            double newWeight = (learningRate * (output - expected) * oldWeight) * input;
+            double newWeight = (learningRate * (output - expected) * oldWeight)
+                    * input;
             weigths.get(i).setWeight(newWeight);
         }
     }
@@ -88,6 +103,13 @@ public class Neuron {
      */
     public void setWeigths(List<Weight> weigths) {
         this.weigths = weigths;
+    }
+
+    /**
+     * @return the inputNeuron
+     */
+    public boolean isInputNeuron() {
+        return inputNeuron;
     }
 
 }
