@@ -14,62 +14,74 @@ import org.slf4j.LoggerFactory;
  */
 public class Layer extends AbstractLayer implements Comparable<Layer> {
 
-    Logger logger = LoggerFactory.getLogger(Layer.class);
+	Logger logger = LoggerFactory.getLogger(Layer.class);
 
-    List<Neuron> neurons;
+	List<Neuron> neurons;
 
-    /**
-     * 
-     * Default constructor.
-     */
-    public Layer(int layerSize) {
-        logger.info("Layer id :" + getLayerId());
-        neurons = new ArrayList<Neuron>();
-        Neuron tempNeuron = null;
-        for (int i = 0; i < layerSize; i++) {
-            tempNeuron = new Neuron();
-            neurons.add(tempNeuron);
-        }
-    }
+	/**
+	 * No-arg constructor init with emty neuron list.
+	 */
+	public Layer() {
+		logger.info("Layer id : " + getLayerId());
+		neurons = new ArrayList<Neuron>();
+	}
 
-    public void addNeuron(Neuron neuron) {
-        neurons.add(neuron);
-    }
+	/**
+	 * 
+	 * Default constructor.
+	 * 
+	 * @param layerSize
+	 *            Neuron count which layer contains
+	 */
+	public Layer(int layerSize) {
+		logger.info("Specialized Layer id :" + getLayerId());
+		neurons = new ArrayList<Neuron>();
+		Neuron tempNeuron = null;
+		for (int i = 0; i < layerSize; i++) {
+			tempNeuron = new Neuron();
+			neurons.add(tempNeuron);
+		}
+	}
 
-    /**
-     * @return the neurons
-     */
-    public List<Neuron> getNeurons() {
-        return neurons;
-    }
+	public void addNeuron(Neuron neuron) {
+		neurons.add(neuron);
+	}
 
-    /**
-     * @param neurons the neurons to set
-     */
-    public void setNeurons(List<Neuron> neurons) {
-        this.neurons = neurons;
-    }
+	/**
+	 * @return the neurons
+	 */
+	public List<Neuron> getNeurons() {
+		return neurons;
+	}
 
-    /**
-     * Size of containing neurons.
-     * 
-     * @return Neuron size
-     */
-    public int getSize() {
-        return neurons.size();
-    }
+	/**
+	 * @param neurons
+	 *            the neurons to set
+	 */
+	public void setNeurons(List<Neuron> neurons) {
+		this.neurons = neurons;
+	}
 
-    @Override
-    public int compareTo(Layer o) {
-        int otherId = o.getLayerId();
-        int layerId = getLayerId();
-        if (otherId < layerId) {
-            return -1;
-        } else if (otherId > layerId) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+	/**
+	 * Size of containing neurons.
+	 * 
+	 * @return Neuron size
+	 */
+	public int getSize() {
+		return neurons.size();
+	}
+
+	@Override
+	public int compareTo(Layer o) {
+		int otherId = o.getLayerId();
+		int layerId = getLayerId();
+		if (otherId < layerId) {
+			return -1;
+		} else if (otherId > layerId) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 
 }
