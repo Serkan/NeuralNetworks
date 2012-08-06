@@ -2,8 +2,6 @@ package org.neuralnetworking.util;
 
 import java.util.Random;
 
-import org.neuralnetworking.core.Weight;
-
 /**
  * Util class produce random weights.
  * 
@@ -12,11 +10,9 @@ import org.neuralnetworking.core.Weight;
  */
 public final class RandomWeightProducer {
 
-    public static Weight produce() {
-        Weight w = new Weight();
+    public static double produce() {
         Random r = new Random();
-        w.setWeight(r.nextDouble());
-        return w;
+        return r.nextDouble();
     }
 
 }

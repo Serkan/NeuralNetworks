@@ -1,6 +1,5 @@
 package org.neuralnetworking.manage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -31,29 +30,33 @@ public class NetworkManager {
         this.learningRate = learningRate;
     }
 
-    public void train(List<Boolean> trainingSet, Boolean expected) {
+    public void train(double[] trainingSet, double[] expected) {
+        network.initInputs(trainingSet);
         Queue<Layer> layers = network.getLayers();
-        int size = layers.size();
-        List<Boolean> resultSet = trainingSet;
-        // travarse layers by peeking from layer queue
-        for (int i = 0; i < size; i++) {
-            List<Boolean> tempResult = new ArrayList<Boolean>();
-            Layer currentLayer = layers.peek();
-            List<Neuron> neurons = currentLayer.getNeurons();
-            for (Neuron neuron : neurons) {
-                boolean singleResult = neuron.perform(resultSet);
-                // if we did not get expected result,change weights of current
-                // neuron
-                if (!expected.equals(singleResult)) {
-                    int ex = 0;
-                    if (expected) {
-                        ex = 1;
-                    }
-                    neuron.changeWeights(learningRate, ex);
-                }
-                tempResult.add(singleResult);
-            }
-            resultSet = tempResult;
+        int layersCount = layers.size();
+        Layer currentLayer = null;
+        // this is input layer
+        currentLayer = layers.peek();
+        int currentLayerSize = currentLayer.getSize();
+        double[] processSet = new double[currentLayerSize];
+        // fill input array with input neuron values
+        List<Neuron> currentNeurons = currentLayer.getNeurons();
+        for (int i = 0; i < currentLayerSize; i++) {
+            double temp = currentNeurons.get(i).getNeuronInput();
+            processSet[i] = temp;
         }
+        double[] valueSet = null;
+        for (int j = 0; j < layersCount; j++) {
+            currentLayer = layers.peek();
+            valueSet = new double[currentLayer.getSize()];
+            List<Neuron> neurons = currentLayer.getNeurons();
+            int i = 0;
+            for (Neuron neuron : neurons) {
+                valueSet[i++] = neuron.perform(processSet);
+            }
+            processSet = valueSet;
+            valueSet = null;
+        }
+
     }
 }

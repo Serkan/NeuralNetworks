@@ -24,18 +24,4 @@ public class TestNeuron {
         neuron = new Neuron(5);
     }
 
-    @Test
-    public void testWeightSize() {
-        List<Weight> weigths = neuron.getWeigths();
-        Assert.assertTrue(weigths.size() == 5);
-    }
-
-    @Test
-    public void testChangeWeights() {
-        double learningRate = 0.2;
-        int expected = 1;
-
-        neuron.changeWeights(learningRate, expected);
-    }
-
 }

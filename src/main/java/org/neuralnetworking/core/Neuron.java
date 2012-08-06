@@ -1,6 +1,5 @@
 package org.neuralnetworking.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.neuralnetworking.util.RandomWeightProducer;
@@ -17,7 +16,7 @@ public class Neuron extends AbstractNeuron {
 
     Logger logger = LoggerFactory.getLogger(Neuron.class);
 
-    private List<Weight> weigths;
+    private double[] weigths;
 
     private ActivatorFunction activator;
 
@@ -26,6 +25,8 @@ public class Neuron extends AbstractNeuron {
     private List<Boolean> inputVector;
 
     private boolean inputNeuron = false;
+
+    private double neuronInput;
 
     public Neuron() {
         logger.info("Input neuron");
@@ -43,10 +44,10 @@ public class Neuron extends AbstractNeuron {
         logger.info("Neuron id : " + getNeuronId());
         logger.info("Neuron input size : " + inputsize);
         activator = new ActivatorImpl();
-        weigths = new ArrayList<Weight>();
+        weigths = new double[inputsize];
         output = 0;
         for (int i = 0; i < inputsize; i++) {
-            weigths.add(RandomWeightProducer.produce());
+            weigths[i] = (RandomWeightProducer.produce());
         }
 
     }
@@ -57,21 +58,16 @@ public class Neuron extends AbstractNeuron {
      * @param input Inputs
      * @return active or not
      */
-    public boolean perform(List<Boolean> input) {
-        if (weigths.size() == input.size()) {
-            double result = 0;
-            for (int i = 0; i < weigths.size(); i++) {
-                int temp = 0;
-                if (input.get(i)) {
-                    temp = 1;
-                }
-                result += temp * weigths.get(i).getWeight();
+    public int perform(double[] input) {
+        if (weigths.length == input.length) {
+            double sum = 0;
+            for (int i = 0; i < input.length; i++) {
+                sum += input[i] * weigths[i];
             }
-            if (activator.activate(result)) {
-                output = 1;
-                return true;
+            if (activator.activate(sum)) {
+                return 1;
             } else {
-                return false;
+                return 0;
             }
         } else {
             throw new RuntimeException("Weight and input size are not equal");
@@ -79,30 +75,16 @@ public class Neuron extends AbstractNeuron {
     }
 
     public void changeWeights(double learningRate, int expected) {
-        for (int i = 0; i < weigths.size(); i++) {
+        for (int i = 0; i < weigths.length; i++) {
             int input = 0;
             if (inputVector.get(i)) {
                 input = 1;
             }
-            double oldWeight = weigths.get(i).getWeight();
+            double oldWeight = weigths[i];
             double newWeight = (learningRate * (output - expected) * oldWeight)
                     * input;
-            weigths.get(i).setWeight(newWeight);
+            weigths[i] = newWeight;
         }
-    }
-
-    /**
-     * @return the weigths
-     */
-    public List<Weight> getWeigths() {
-        return weigths;
-    }
-
-    /**
-     * @param weigths the weigths to set
-     */
-    public void setWeigths(List<Weight> weigths) {
-        this.weigths = weigths;
     }
 
     /**
@@ -110,6 +92,20 @@ public class Neuron extends AbstractNeuron {
      */
     public boolean isInputNeuron() {
         return inputNeuron;
+    }
+
+    /**
+     * @return the neuronInput
+     */
+    public double getNeuronInput() {
+        return neuronInput;
+    }
+
+    /**
+     * @param neuronInput the neuronInput to set
+     */
+    public void setNeuronInput(double neuronInput) {
+        this.neuronInput = neuronInput;
     }
 
 }
