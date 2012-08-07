@@ -32,7 +32,7 @@ public class NeuralNetwork {
 		layers.add(inputLayer);
 		// previous layer
 		Layer preLayer = inputLayer;
-		int preLayerSize = 0;
+		int preLayerSize = preLayer.getSize();
 		if (layerCount != 0) {
 			preLayerSize = preLayer.getSize();
 			// constructing hidden layers
