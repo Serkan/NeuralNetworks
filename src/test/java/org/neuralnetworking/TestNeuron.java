@@ -1,13 +1,7 @@
 package org.neuralnetworking;
 
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.junit.Before;
-import org.junit.Test;
 import org.neuralnetworking.core.Neuron;
-import org.neuralnetworking.core.Weight;
 
 /**
  * Test class for {@link Neuron}.
@@ -17,11 +11,11 @@ import org.neuralnetworking.core.Weight;
  */
 public class TestNeuron {
 
-    private Neuron neuron;
+	private Neuron neuron;
 
-    @Before
-    public void installNeuron() {
-        neuron = new Neuron(5);
-    }
+	@Before
+	public void installNeuron() {
+		neuron = new Neuron(5);
+	}
 
 }

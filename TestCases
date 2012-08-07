@@ -12,5 +12,7 @@ mikterı kadar neuron olmalı
 7 - network oluşturuldğuğunda 
 8 -(testInputNeuronPerform) input neuronlarının ağırlık vektörleri olmamalı ver perform metodu 
 doğrudan neuron değerini vermelidir
+9 - hidden layer ve output layer lardaki neuron ların ağırlıkları sıfırdan farklı olmalıdır
+10 - 
 
  

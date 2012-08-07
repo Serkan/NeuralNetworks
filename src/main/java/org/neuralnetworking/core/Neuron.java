@@ -1,7 +1,5 @@
 package org.neuralnetworking.core;
 
-import java.util.List;
-
 import org.neuralnetworking.util.RandomWeightProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,7 @@ public class Neuron extends AbstractNeuron {
 
 	private int output;
 
-	private List<Boolean> inputVector;
+	private double[] inputVector;
 
 	private boolean inputNeuron = false;
 
@@ -72,13 +70,9 @@ public class Neuron extends AbstractNeuron {
 
 	public void changeWeights(double learningRate, int expected) {
 		for (int i = 0; i < weigths.length; i++) {
-			int input = 0;
-			if (inputVector.get(i)) {
-				input = 1;
-			}
 			double oldWeight = weigths[i];
 			double newWeight = (learningRate * (output - expected) * oldWeight)
-					* input;
+					* inputVector[i];
 			weigths[i] = newWeight;
 		}
 	}

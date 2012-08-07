@@ -1,7 +1,11 @@
 package org.neuralnetworking.main;
 
+import java.util.List;
+
 import org.neuralnetworking.core.Layer;
 import org.neuralnetworking.core.NeuralNetwork;
+import org.neuralnetworking.core.Neuron;
+import org.neuralnetworking.util.LayerQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,12 +20,16 @@ public class MainTest {
 	 */
 	public static void main(String[] args) {
 		NeuralNetwork network = new NeuralNetwork(2, 1, 0);
-		Layer layer1 = network.getLayers().nextValue();
-		Layer layer2 = network.getLayers().nextValue();
-		logger.debug("layer 1 : " + layer1.getLayerId());
-		logger.debug("layer 2 : " + layer2.getLayerId());
-		logger.debug("layer 1 size : " + layer1.getSize());
-		logger.debug("layer 2 size : " + layer2.getSize());
+		LayerQueue<Layer> layers = network.getLayers();
+		Layer preLayer = null;
+		Layer nextLayer = null;
+		preLayer = layers.nextValue();
+		nextLayer = layers.nextValue();
+		int preLayerSize = preLayer.getSize();
+		List<Neuron> neurons = nextLayer.getNeurons();
+		for (Neuron neuron : neurons) {
+			System.out.println(neuron.getWeightSize());
+		}
 	}
 
 }

@@ -2,6 +2,6 @@ package org.neuralnetworking.core;
 
 public interface ActivatorFunction {
 
-    boolean activate(double value);
+	boolean activate(double value);
 
 }
