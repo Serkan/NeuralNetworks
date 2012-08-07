@@ -1,0 +1,16 @@
+################TEST CASES###################
+1 -(testLayersNotNull) network oluşturulduğunda layers queue boş olmamalı
+2 -(testInputLayerSize) network oluşturulduğunda input layer içerisinde verilen input size 
+kadar neuron olmalı
+3 -(testOutputLayerSize) network oluşturuldğuğunda output layer içerisinde verilen output 
+mikterı kadar neuron olmalı
+4 -(testHiddenLayerCount) network oluşturuldğuğunda verilen hidden layer count kadar hidden
+ layera sahip olmaslı
+6 -(testHiddenLayerNeuronWeightSize) network oluşturuldğuğunda input layer dan sonraki her layer içindeki
+ neuronların weight vektörleri bir önceki layer ın neuron sayısı kadar 
+ olmalıdır 
+7 - network oluşturuldğuğunda 
+8 -(testInputNeuronPerform) input neuronlarının ağırlık vektörleri olmamalı ver perform metodu 
+doğrudan neuron değerini vermelidir
+
+ 

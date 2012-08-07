@@ -1,9 +1,8 @@
 package org.neuralnetworking.core;
 
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
+import org.neuralnetworking.util.LayerQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,77 +14,78 @@ import org.slf4j.LoggerFactory;
  */
 public class NeuralNetwork {
 
-    Logger logger = LoggerFactory.getLogger(NeuralNetwork.class);
+	Logger logger = LoggerFactory.getLogger(NeuralNetwork.class);
 
-    private Layer inputLayer;
+	private Layer inputLayer;
 
-    private Layer outputLayer;
+	private Layer outputLayer;
 
-    private Queue<Layer> layers;
+	private LayerQueue<Layer> layers;
 
-    public NeuralNetwork(int inputSize, int outputSize, int layerCount) {
-        logger.info("Input size : " + inputSize);
-        logger.info("Output size : " + outputSize);
-        logger.info("Layer Count : " + layerCount);
-        layers = new PriorityQueue<Layer>();
-        // creating input layer
-        inputLayer = new Layer(inputSize);
-        layers.add(inputLayer);
-        // constructing hidden layers
-        Layer layer = null;
-        // detecting hidden layers' neuron size
-        int layerSize = inputSize - outputSize;
-        for (int i = 0; i < layerCount; i++) {
-            layer = new Layer(layerSize);
-            layers.add(layer);
-        }
-        int lastLayerSize = layer.getSize();
-        // creating output layer
-        outputLayer = new Layer();
-        Neuron tempNeuron = null;
-        for (int i = 0; i < outputSize; i++) {
-            tempNeuron = new Neuron(lastLayerSize);
-            outputLayer.addNeuron(tempNeuron);
-        }
-        layers.add(outputLayer);
-    }
+	public NeuralNetwork(int inputSize, int outputSize, int layerCount) {
+		logger.info("Input size : " + inputSize);
+		logger.info("Output size : " + outputSize);
+		logger.info("Hidden Layer Count : " + layerCount);
+		layers = new LayerQueue<Layer>();
+		// creating input layer
+		inputLayer = new Layer(inputSize, 0);
+		layers.add(inputLayer);
+		// previous layer
+		Layer preLayer = inputLayer;
+		int preLayerSize = 0;
+		if (layerCount != 0) {
+			preLayerSize = preLayer.getSize();
+			// constructing hidden layers
+			Layer layer = null;
+			// detecting hidden layers' neuron size
+			int layerSize = inputSize - outputSize;
+			for (int i = 0; i < layerCount; i++) {
+				layer = new Layer(layerSize, preLayerSize);
+				layers.add(layer);
+				preLayer = layer;
+			}
+		}
+		// creating output layer
+		outputLayer = new Layer(outputSize, preLayerSize);
+		layers.add(outputLayer);
+	}
 
-    public void initInputs(double[] inputs) {
-        List<Neuron> neurons = inputLayer.getNeurons();
-        Neuron temp = null;
-        for (int i = 0; i < inputs.length; i++) {
-            temp = neurons.get(i);
-            temp.setNeuronInput(inputs[i]);
-        }
-    }
+	public void initInputs(double[] inputs) {
+		List<Neuron> neurons = inputLayer.getNeurons();
+		Neuron temp = null;
+		for (int i = 0; i < inputs.length; i++) {
+			temp = neurons.get(i);
+			temp.setNeuronInput(inputs[i]);
+		}
+	}
 
-    /**
-     * @return the layers
-     */
-    public Queue<Layer> getLayers() {
-        return layers;
-    }
+	/**
+	 * @return the layers
+	 */
+	public LayerQueue<Layer> getLayers() {
+		return layers;
+	}
 
-    /**
-     * Size of containing layers.
-     * 
-     * @return layers count
-     */
-    public int getSizeOfLayers() {
-        return layers.size();
-    }
+	/**
+	 * Size of containing layers.
+	 * 
+	 * @return layers count
+	 */
+	public int getSizeOfLayers() {
+		return layers.size();
+	}
 
-    /**
-     * Sum of all containing neurons.
-     * 
-     * @return Neurons size
-     */
-    public int getSizeOfNeurons() {
-        int neuronSize = 0;
-        for (Layer layer : layers) {
-            neuronSize += layer.getSize();
-        }
-        return neuronSize;
-    }
+	/**
+	 * Sum of all containing neurons.
+	 * 
+	 * @return Neurons size
+	 */
+	public int getSizeOfNeurons() {
+		int neuronSize = 0;
+		for (Layer layer : layers) {
+			neuronSize += layer.getSize();
+		}
+		return neuronSize;
+	}
 
 }

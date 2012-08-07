@@ -19,32 +19,21 @@ public class Layer extends AbstractLayer implements Comparable<Layer> {
 	List<Neuron> neurons;
 
 	/**
-	 * No-arg constructor init with emty neuron list.
-	 */
-	public Layer() {
-		logger.info("Layer id : " + getLayerId());
-		neurons = new ArrayList<Neuron>();
-	}
-
-	/**
 	 * 
 	 * Default constructor.
 	 * 
 	 * @param layerSize
 	 *            Neuron count which layer contains
+	 * @param preLayerSize
 	 */
-	public Layer(int layerSize) {
-		logger.info("Specialized Layer id :" + getLayerId());
+	public Layer(int layerSize, int preLayerSize) {
+		logger.info("Layer id :" + getLayerId());
 		neurons = new ArrayList<Neuron>();
 		Neuron tempNeuron = null;
 		for (int i = 0; i < layerSize; i++) {
-			tempNeuron = new Neuron();
+			tempNeuron = new Neuron(preLayerSize);
 			neurons.add(tempNeuron);
 		}
-	}
-
-	public void addNeuron(Neuron neuron) {
-		neurons.add(neuron);
 	}
 
 	/**
@@ -52,14 +41,6 @@ public class Layer extends AbstractLayer implements Comparable<Layer> {
 	 */
 	public List<Neuron> getNeurons() {
 		return neurons;
-	}
-
-	/**
-	 * @param neurons
-	 *            the neurons to set
-	 */
-	public void setNeurons(List<Neuron> neurons) {
-		this.neurons = neurons;
 	}
 
 	/**

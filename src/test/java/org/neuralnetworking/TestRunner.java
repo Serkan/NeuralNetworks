@@ -1,12 +1,14 @@
 package org.neuralnetworking;
 
-import java.util.Queue;
+import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.neuralnetworking.core.Layer;
 import org.neuralnetworking.core.NeuralNetwork;
+import org.neuralnetworking.core.Neuron;
+import org.neuralnetworking.util.LayerQueue;
 
 /**
  * Test for several network models.
@@ -14,37 +16,54 @@ import org.neuralnetworking.core.NeuralNetwork;
  * @author serkan
  * 
  */
-public class TestRunner {
+public class TestRunner extends Assert {
 
-    private NeuralNetwork network;
+	private static NeuralNetwork network;
 
-    @Before
-    public void install_network() {
-        network = new NeuralNetwork(2, 1, 0);
+	@BeforeClass
+	public static void install_network() {
+		network = new NeuralNetwork(2, 1, 0);
+	}
 
-    }
+	@Test
+	public void testLayersNotNull() {
+		LayerQueue<Layer> layers = network.getLayers();
+		assertNotNull(layers);
+	}
 
-    @Test
-    public void layers_not_null() {
-        Queue<Layer> layerqueue = network.getLayers();
-        Assert.assertNotNull(layerqueue);
-    }
+	@Test
+	public void testInputLayerSize() {
+		LayerQueue<Layer> layers = network.getLayers();
+		assertTrue(2 == layers.nextValue().getSize());
+	}
 
-    @Test
-    public void layers_count_assertion() {
-        Queue<Layer> layerqueue = network.getLayers();
-        Assert.assertTrue((layerqueue.size() == 2));
-    }
+	@Test
+	public void testOutputLayerSize() {
+		LayerQueue<Layer> layers = network.getLayers();
+		Layer lastLayer = null;
+		lastLayer = layers.getLast();
+		assertTrue(1 == lastLayer.getSize());
+	}
 
-    @Test
-    public void layer_neuron_count() {
-        Queue<Layer> layerqueue = network.getLayers();
-        // first layer
-        Layer layer1 = layerqueue.peek();
-        Assert.assertTrue(layer1.getSize() == 1);
-        // second layer
-        Layer layer2 = layerqueue.peek();
-        Assert.assertTrue(layer2.getSize() == 1);
-    }
+	@Test
+	public void testHiddenLayerCount() {
+		LayerQueue<Layer> layers = network.getLayers();
+		int hiddenLayerCount = layers.size() - 2;
+		assertTrue(hiddenLayerCount == 0);
+	}
+
+	@Test
+	public void testHiddenLayerNeuronWeightSize() {
+		LayerQueue<Layer> layers = network.getLayers();
+		Layer preLayer = null;
+		Layer nextLayer = null;
+		preLayer = layers.nextValue();
+		nextLayer = layers.nextValue();
+		int preLayerSize = preLayer.getSize();
+		List<Neuron> neurons = nextLayer.getNeurons();
+		for (Neuron neuron : neurons) {
+			assertTrue(neuron.getWeightSize() == preLayerSize);
+		}
+	}
 
 }
